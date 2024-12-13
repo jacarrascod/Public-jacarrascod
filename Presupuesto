@@ -1,0 +1,47 @@
+import matplotlib.pyplot as plt
+
+# Ingresar datos
+ingreso = float(input("Ingresa tus ingresos mensuales: "))
+
+print("\n=== Ingresar Gastos Fijos ===")
+gastos_fijos = {}
+while True:
+    concepto = input("Concepto (o 'fin' para terminar): ")
+    if concepto.lower() == 'fin':
+        break
+    monto = float(input(f"Monto para {concepto}: "))
+    gastos_fijos[concepto] = monto
+
+print("\n=== Ingresar Gastos Variables ===")
+gastos_variables = {}
+while True:
+    concepto = input("Concepto (o 'fin' para terminar): ")
+    if concepto.lower() == 'fin':
+        break
+    monto = float(input(f"Monto para {concepto}: "))
+    gastos_variables[concepto] = monto
+
+# Cálculos
+total_gastos_fijos = sum(gastos_fijos.values())
+total_gastos_variables = sum(gastos_variables.values())
+total_gastos = total_gastos_fijos + total_gastos_variables
+saldo = ingreso - total_gastos
+
+porcentaje_fijos = (total_gastos_fijos / ingreso) * 100 if ingreso > 0 else 0
+porcentaje_variables = (total_gastos_variables / ingreso) * 100 if ingreso > 0 else 0
+
+# Resultados
+print("\n=== Resumen ===")
+print(f"Ingreso mensual: S/{ingreso:.2f}")
+print(f"Gastos fijos: S/{total_gastos_fijos:.2f} ({porcentaje_fijos:.1f}%)")
+print(f"Gastos variables: S/{total_gastos_variables:.2f} ({porcentaje_variables:.1f}%)")
+print(f"Saldo final: S/{saldo:.2f} {'(Déficit)' if saldo < 0 else ''}")
+
+# Visualización
+labels = ['Gastos Fijos', 'Gastos Variables', 'Saldo Disponible']
+values = [total_gastos_fijos, total_gastos_variables, max(0, saldo)]
+
+plt.figure(figsize=(8, 5))
+plt.pie(values, labels=labels, autopct='%1.1f%%', startangle=90, colors=['#ff9999','#66b3ff','#99ff99'])
+plt.title("Distribución del Presupuesto")
+plt.show()
